@@ -1,0 +1,15 @@
+First go to the folder you want to put your files - DOne
+
+1) Clone -Done
+git clone https://github.com/ajimal1992/2103Assignment <FolderName>
+
+2) Always commit ur changes to ur files - Done
+-git status     
+-git add <filename>
+-git commit -m "Why i commit"
+
+3) Before pushing, always pull
+git pull
+
+4) Finally push.
+git push
