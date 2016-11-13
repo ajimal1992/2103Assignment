@@ -7,11 +7,10 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Admin Logs</title>
+        <title>Assistant Logs</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -26,27 +25,24 @@ and open the template in the editor.
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
         <link href="css/customCSS.css" rel="stylesheet">
-
     </head>
-    <body id="AdminLog">
+    <body>
         <div id="wrapper">
-
-            <?php include "header.php" ?>
+             <?php include "header.php" ?>
             <div id="page-wrapper">
                 <div class="container-fluid">
 
                     <div class="row">
                         <div class="col-lg-12">
-                            <h1 class="page-header">Admin Logs</h1>
-                           
-                            <form method="post">
+                            <h1 class="page-header">Assistant Logs</h1>
+                           <form method="post">
                                 <input type="text" name='searchInput' id="myInput"  placeholder="Search" autofocus/>
                                 <button class="btn btn-info" name = "submit" type = "submit" value = "submit">Submit</button>
                             </form>
                             <br/>
                             <p> Total number of records: <u>
                                 <?php
-                                $countQuery = "SELECT COUNT(*) AS records FROM AdminLog_updates_on al";
+                                $countQuery = "SELECT COUNT(*) AS records FROM AssistantLog_tentative_updates_on assLog WHERE assLog.update_ID IN (SELECT app.update_ID FROM Approves app)";
 
                                 $countResult = sqlsrv_query($conn, $countQuery);
                                 if ($countResult === false) {
@@ -58,7 +54,6 @@ and open the template in the editor.
                                 }
                                     ?>
                                 </u></p>
-                                
                                 <div class="table-responsive">
                                     <table id="myTable">
 
@@ -75,15 +70,17 @@ and open the template in the editor.
                                         </tr>
 
                                         <?php
-                                        // SEARCHING FUNCTION
+                                         // SEARCHING FUNCTION 
                                         if (isset($_POST['submit'])) {
                                             $searchInput = trim($_POST['searchInput']);
-                                            $searchQuery = "SELECT * FROM AdminLog_updates_on al, admin_acc aa "
-                                                    . "WHERE aa.userID = al.userID AND (al.update_ID LIKE '%$searchInput%' OR "
-                                                    . "aa.username LIKE '%$searchInput%' OR al.birth_year LIKE '%$searchInput%' OR "
-                                                    . "al.entity LIKE '%$searchInput%' OR al.new_value LIKE '%$searchInput%' OR "
-                                                    . "al.prev_value LIKE '%$searchInput%' OR al.update_type LIKE '%$searchInput%' "
-                                                    . "OR al.timestamp LIKE '%$searchInput%' OR al.attribute LIKE '%$searchInput%')";
+                                            $searchQuery = "SELECT assLog.update_ID, assAd.username, assLog.birth_year, assLog.entity, assLog.new_value, "
+                                                    . "assLog.prev_value, assLog.update_type, app.timestamp, assLog.attribute FROM AssistantLog_tentative_updates_on assLog, assistant_admin_acc assAd, Approves app "
+                                                    . "WHERE assAd.userID = assLog.userID AND app.update_ID = assLog.update_ID AND(assLog.update_ID LIKE '%$searchInput%' OR "
+                                                    . "assAd.username LIKE '%$searchInput%' OR assLog.birth_year LIKE '%$searchInput%' OR "
+                                                    . "assLog.entity LIKE '%$searchInput%' OR assLog.new_value LIKE '%$searchInput%' OR "
+                                                    . "assLog.prev_value LIKE '%$searchInput%' OR assLog.update_type LIKE '%$searchInput%' "
+                                                    . "OR app.timestamp LIKE '%$searchInput%' OR assLog.attribute LIKE '%$searchInput%') "
+                                                    . "AND assLog.update_ID IN (SELECT app.update_ID FROM Approves app)";
 
                                             $searchResult = sqlsrv_query($conn, $searchQuery);
                                             if ($searchResult === false) {
@@ -106,13 +103,11 @@ and open the template in the editor.
                                                 echo '<td>' . $row['attribute'] . '</td>';
                                                 echo '<td>' . $date_string . '</td>';
                                                 echo '</tr>';
-                                            }
-                                          //END OF SEARCHING FUNCTION
-                                        }  
-                                        else { // RETRIEVE ALL TABLES WITHOUT SEARCHING FUNCTION
-                                            $retrieveQuery = "SELECT al.update_ID, aa.username, al.birth_year, al.entity, al.new_value, "
-                                                    . "al.prev_value, al.update_type, al.timestamp, al.attribute FROM AdminLog_updates_on al, admin_acc aa "
-                                                    . "WHERE aa.userID = al.userID";
+                                            } //END OF SEARCHING FUNCTION 
+                                        } else { // RETRIEVE ALL APPROVED RECORDS WITHOUT SEARCHING FUNCTION
+                                            $retrieveQuery = "SELECT assLog.update_ID, assAd.username, assLog.birth_year, assLog.entity, assLog.new_value, "
+                                                    . "assLog.prev_value, assLog.update_type, app.timestamp, assLog.attribute FROM AssistantLog_tentative_updates_on assLog, assistant_admin_acc assAd, Approves app "
+                                                    . "WHERE assAd.userID = assLog.userID AND app.update_ID = assLog.update_ID AND assLog.update_ID IN (SELECT app.update_ID FROM Approves app)";
                                             $retrieveResult = sqlsrv_query($conn, $retrieveQuery);
                                             if ($retrieveResult === false) {
                                                 die(print_r(sqlsrv_errors(), true));
@@ -134,12 +129,11 @@ and open the template in the editor.
                                                 echo '<td>' . $row['attribute'] . '</td>';
                                                 echo '<td>' . $date_string . '</td>';
                                                 echo '</tr>';
-                                            }
-                                        } // END OF RETRIEVE ALL TABLES WITHOUT SEARCHING FUNCTION
+                                            } 
+                                        }  // END OF RETRIEVE ALL APPROVED RECORDS WITHOUT SEARCHING FUNCTION
                                         ?>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                     <!-- /.row -->
@@ -151,7 +145,6 @@ and open the template in the editor.
             <!-- /#page-wrapper --> 
         </div>
         <!-- /#wrapper -->
-        
         <!-- jQuery -->
         <script src="js/jquery.js"></script>
 
@@ -162,7 +155,5 @@ and open the template in the editor.
         <script src="js/plugins/morris/raphael.min.js"></script>
         <script src="js/plugins/morris/morris.min.js"></script>
         <script src="js/plugins/morris/morris-data.js"></script>
-
-
     </body>
 </html>
