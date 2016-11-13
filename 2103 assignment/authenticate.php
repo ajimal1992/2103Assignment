@@ -27,7 +27,7 @@ else*/if( $row = sqlsrv_fetch_array( $query, SQLSRV_FETCH_ASSOC) ) {
 {
     $_SESSION['valid_user'] = true;
     $_SESSION['username'] = $username;
-    header('Location: admin.php');//this should link to the assitant admin acc
+    header('Location: AssistantLog.php');
     
 }
 else{
