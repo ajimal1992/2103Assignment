@@ -145,6 +145,9 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="ApproveLogs.php"><i class="fa fa-fw fa-file"></i> Approving Logs</a>
+                </li>
+                <li>
                     <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
                 </li>
                 <li>
