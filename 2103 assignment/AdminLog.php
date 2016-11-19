@@ -63,7 +63,7 @@ and open the template in the editor.
                                     <table id="myTable">
 
                                         <tr>
-                                            <th>Log No.</th>
+                                            <th>No.</th>
                                             <th>Name</th>
                                             <th>Birth Year</th>
                                             <th>Entity</th>
@@ -71,6 +71,7 @@ and open the template in the editor.
                                             <th>Prev Value</th>
                                             <th>Update type</th>
                                             <th>Attribute</th>
+                                            <th>Unique Keys</th>
                                             <th>Date & Time Stamp</th>            
                                         </tr>
 
@@ -83,7 +84,7 @@ and open the template in the editor.
                                                     . "aa.username LIKE '%$searchInput%' OR al.birth_year LIKE '%$searchInput%' OR "
                                                     . "al.entity LIKE '%$searchInput%' OR al.new_value LIKE '%$searchInput%' OR "
                                                     . "al.prev_value LIKE '%$searchInput%' OR al.update_type LIKE '%$searchInput%' "
-                                                    . "OR al.timestamp LIKE '%$searchInput%' OR al.attribute LIKE '%$searchInput%')";
+                                                    . "OR al.timestamp LIKE '%$searchInput%' OR al.attribute LIKE '%$searchInput%' OR al.unique_keys LIKE '%$searchInput%')";
 
                                             $searchResult = sqlsrv_query($conn, $searchQuery);
                                             if ($searchResult === false) {
@@ -94,7 +95,7 @@ and open the template in the editor.
                                                 $results[] = $searchRow;
                                             }
                                             foreach($results as $row){
-                                                $date_string = date_format($row['timestamp'], 'jS F Y, G:i A');  // format the date and time
+                                                $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
                                                 echo '<tr>';
                                                 echo '<td>' . $row['update_ID'] . '</td>';
                                                 echo '<td>' . $row['username'] . '</td>';
@@ -104,6 +105,7 @@ and open the template in the editor.
                                                 echo '<td>' . $row['prev_value'] . '</td>';
                                                 echo '<td>' . $row['update_type'] . '</td>';
                                                 echo '<td>' . $row['attribute'] . '</td>';
+                                                echo '<td>' . $row['unique_keys'] . '</td>';
                                                 echo '<td>' . $date_string . '</td>';
                                                 echo '</tr>';
                                             }
@@ -111,7 +113,7 @@ and open the template in the editor.
                                         }  
                                         else { // RETRIEVE ALL TABLES WITHOUT SEARCHING FUNCTION
                                             $retrieveQuery = "SELECT al.update_ID, aa.username, al.birth_year, al.entity, al.new_value, "
-                                                    . "al.prev_value, al.update_type, al.timestamp, al.attribute FROM AdminLog_updates_on al, admin_acc aa "
+                                                    . "al.prev_value, al.update_type, al.timestamp, al.attribute, al.unique_keys FROM AdminLog_updates_on al, admin_acc aa "
                                                     . "WHERE aa.userID = al.userID";
                                             $retrieveResult = sqlsrv_query($conn, $retrieveQuery);
                                             if ($retrieveResult === false) {
@@ -122,7 +124,7 @@ and open the template in the editor.
                                                 $results1[] = $retrieveRow;
                                             }
                                             foreach($results1 as $row){
-                                            $date_string = date_format($row['timestamp'], 'jS F Y, G:i A');  // format the date and time
+                                            $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
                                                 echo '<tr>';
                                                 echo '<td>' . $row['update_ID'] . '</td>';
                                                 echo '<td>' . $row['username'] . '</td>';
@@ -132,6 +134,7 @@ and open the template in the editor.
                                                 echo '<td>' . $row['prev_value'] . '</td>';
                                                 echo '<td>' . $row['update_type'] . '</td>';
                                                 echo '<td>' . $row['attribute'] . '</td>';
+                                                echo '<td>' . $row['unique_keys'] . '</td>';
                                                 echo '<td>' . $date_string . '</td>';
                                                 echo '</tr>';
                                             }

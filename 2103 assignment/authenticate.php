@@ -7,7 +7,7 @@
  */
 
 session_start();
-require_once 'Dbconnect.php';
+require_once 'database.php';
 $username = $_REQUEST['username'];
 $password  = $_REQUEST['pwd'];
 $sql = "SELECT * FROM admin_acc WHERE username='$username' AND pwd='$password'";

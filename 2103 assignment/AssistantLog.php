@@ -56,9 +56,8 @@ and open the template in the editor.
                                 </u></p>
                                 <div class="table-responsive">
                                     <table id="myTable">
-
                                         <tr>
-                                            <th>Log No.</th>
+                                            <th>No.</th>
                                             <th>Name</th>
                                             <th>Birth Year</th>
                                             <th>Entity</th>
@@ -66,6 +65,7 @@ and open the template in the editor.
                                             <th>Prev Value</th>
                                             <th>Update type</th>
                                             <th>Attribute</th>
+                                            <th>Unique Keys</th>
                                             <th>Date & Time Stamp</th>            
                                         </tr>
 
@@ -74,13 +74,13 @@ and open the template in the editor.
                                         if (isset($_POST['submit'])) {
                                             $searchInput = trim($_POST['searchInput']);
                                             $searchQuery = "SELECT assLog.update_ID, assAd.username, assLog.birth_year, assLog.entity, assLog.new_value, "
-                                                    . "assLog.prev_value, assLog.update_type, app.timestamp, assLog.attribute FROM AssistantLog_tentative_updates_on assLog, assistant_admin_acc assAd, Approves app "
+                                                    . "assLog.prev_value, assLog.update_type, app.timestamp, assLog.attribute, assLog.unique_keys FROM AssistantLog_tentative_updates_on assLog, assistant_admin_acc assAd, Approves app "
                                                     . "WHERE assAd.userID = assLog.userID AND app.update_ID = assLog.update_ID AND(assLog.update_ID LIKE '%$searchInput%' OR "
                                                     . "assAd.username LIKE '%$searchInput%' OR assLog.birth_year LIKE '%$searchInput%' OR "
                                                     . "assLog.entity LIKE '%$searchInput%' OR assLog.new_value LIKE '%$searchInput%' OR "
                                                     . "assLog.prev_value LIKE '%$searchInput%' OR assLog.update_type LIKE '%$searchInput%' "
-                                                    . "OR app.timestamp LIKE '%$searchInput%' OR assLog.attribute LIKE '%$searchInput%') "
-                                                    . "AND assLog.update_ID IN (SELECT app.update_ID FROM Approves app)";
+                                                    . "OR app.timestamp LIKE '%$searchInput%' OR assLog.attribute LIKE '%$searchInput%' OR assLog.unique_keys LIKE '%$searchInput%') "
+                                                    . "AND assLog.update_ID IN (SELECT app.update_ID FROM Approves app) ORDER BY assLog.update_ID ASC";
 
                                             $searchResult = sqlsrv_query($conn, $searchQuery);
                                             if ($searchResult === false) {
@@ -91,7 +91,7 @@ and open the template in the editor.
                                                 $results[] = $searchRow;
                                             }
                                             foreach($results as $row){
-                                                $date_string = date_format($row['timestamp'], 'jS F Y, G:i A');  // format the date and time
+                                                $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
                                                 echo '<tr>';
                                                 echo '<td>' . $row['update_ID'] . '</td>';
                                                 echo '<td>' . $row['username'] . '</td>';
@@ -101,13 +101,14 @@ and open the template in the editor.
                                                 echo '<td>' . $row['prev_value'] . '</td>';
                                                 echo '<td>' . $row['update_type'] . '</td>';
                                                 echo '<td>' . $row['attribute'] . '</td>';
+                                                echo '<td>' . $row['unique_keys'] . '</td>';
                                                 echo '<td>' . $date_string . '</td>';
                                                 echo '</tr>';
                                             } //END OF SEARCHING FUNCTION 
                                         } else { // RETRIEVE ALL APPROVED RECORDS WITHOUT SEARCHING FUNCTION
                                             $retrieveQuery = "SELECT assLog.update_ID, assAd.username, assLog.birth_year, assLog.entity, assLog.new_value, "
-                                                    . "assLog.prev_value, assLog.update_type, app.timestamp, assLog.attribute FROM AssistantLog_tentative_updates_on assLog, assistant_admin_acc assAd, Approves app "
-                                                    . "WHERE assAd.userID = assLog.userID AND app.update_ID = assLog.update_ID AND assLog.update_ID IN (SELECT app.update_ID FROM Approves app)";
+                                                    . "assLog.prev_value, assLog.update_type, app.timestamp, assLog.attribute, assLog.unique_keys FROM AssistantLog_tentative_updates_on assLog, assistant_admin_acc assAd, Approves app "
+                                                    . "WHERE assAd.userID = assLog.userID AND app.update_ID = assLog.update_ID AND assLog.update_ID IN (SELECT app.update_ID FROM Approves app) ORDER BY assLog.update_ID ASC";
                                             $retrieveResult = sqlsrv_query($conn, $retrieveQuery);
                                             if ($retrieveResult === false) {
                                                 die(print_r(sqlsrv_errors(), true));
@@ -117,7 +118,7 @@ and open the template in the editor.
                                                 $results1[] = $retrieveRow;
                                             }
                                             foreach($results1 as $row){
-                                            $date_string = date_format($row['timestamp'], 'jS F Y, G:i A');  // format the date and time
+                                            $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
                                                 echo '<tr>';
                                                 echo '<td>' . $row['update_ID'] . '</td>';
                                                 echo '<td>' . $row['username'] . '</td>';
@@ -127,9 +128,11 @@ and open the template in the editor.
                                                 echo '<td>' . $row['prev_value'] . '</td>';
                                                 echo '<td>' . $row['update_type'] . '</td>';
                                                 echo '<td>' . $row['attribute'] . '</td>';
+                                                echo '<td>' . $row['unique_keys'] . '</td>';
                                                 echo '<td>' . $date_string . '</td>';
                                                 echo '</tr>';
                                             } 
+                                             
                                         }  // END OF RETRIEVE ALL APPROVED RECORDS WITHOUT SEARCHING FUNCTION
                                         ?>
                                 </table>

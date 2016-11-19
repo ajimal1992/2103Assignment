@@ -1,59 +1,6 @@
 <?php
 include ("database.php");
 ?>
-//<?php
-//// if clicked approve button and selected checkbox
-//if (isset($_POST['approve']) && isset($_POST['select'])) {
-//    foreach ($_POST['select'] as $check) {
-//
-//        $approvingQuery = "SELECT * FROM AssistantLog_tentative_updates_on WHERE update_ID = $check";
-//        $approvingResult = sqlsrv_query($conn, $approvingQuery);
-//        if ($approvingResult === false) {
-//            die(print_r(sqlsrv_errors(), true));
-//        }
-//        $results1 = [];
-//        // use variable to store the checked table row
-//        while ($approvingRow = sqlsrv_fetch_array($approvingResult, SQLSRV_FETCH_ASSOC)) {
-//            $results1[] = $approvingRow;
-//        }
-//        foreach ($results1 as $row) {
-//            $updateID = $row['update_ID'];
-//            $AssistUserID = $row['userID'];
-//            $birthYear = $row['birth_year'];
-//            $entity = $row['entity'];
-//            $newValue = $row['new_value'];
-//            $prevValue = $row['prev_value'];
-//            $updateType = $row['update_type'];
-//            $attribute = $row['attribute'];
-//        }
-//
-//        // approve to UPDATE the respective entity and attribute
-//        if ($updateType == "update") {
-//            $updateQuery = "$updateType $entity SET $attribute = $newValue WHERE birth_year = $birthYear";
-//            $updateResult = sqlsrv_query($conn, $updateQuery);
-//            if ($updateResult === false) {
-//                die(print_r(sqlsrv_errors(), true));
-//            }
-//        }
-//
-//        if ($updateType == "delete") {
-//            $deleteQuery = "$updateType FROM $entity WHERE birth_year = $birthYear";
-//        }
-//
-//        // Insert the admin who approved the assistant logs
-//        // Assume admin id is 1.
-//        $approvedQuery = "INSERT INTO Approves (update_ID, admin_userID, assist_userID) VALUES ($updateID,1,$AssistUserID)";
-//        $approvedResult = sqlsrv_query($conn, $approvedQuery);
-//        if ($approvedResult === false) {
-//            die(print_r(sqlsrv_errors(), true));
-//        }
-//    }
-//}
-//?>
-
-
-
-
 
 <!DOCTYPE html>
 <!--
@@ -97,7 +44,7 @@ and open the template in the editor.
                                                             <button class="btn btn-info" name = "submit" type = "submit" value = "submit">Submit</button>
                                                         </form>-->
                             <br/>
-                            <p> Number of records: <u>
+                            <p> Total number of records: <u>
                                 <?php
                                 $countQuery = "SELECT COUNT(*) AS records FROM AssistantLog_tentative_updates_on assLog WHERE assLog.update_ID NOT IN (SELECT app.update_ID FROM Approves app)";
 
@@ -115,8 +62,8 @@ and open the template in the editor.
                                 <form method="post" action="ApprovalQueries.php">
                                     <table id="myTable">
                                         <tr>
-                                            <th>Select All</th>
-                                            <th>Log No.</th>
+                                            <th><center>Select</center></th>
+                                            <th>No.</th>
                                             <th>Name</th>
                                             <th>Birth Year</th>
                                             <th>Entity</th>
@@ -124,13 +71,14 @@ and open the template in the editor.
                                             <th>Prev Value</th>
                                             <th>Update type</th>
                                             <th>Attribute</th>
+                                            <th>Unique Keys</th>
                                             <th>Date & Time Stamp</th>            
                                         </tr>
 
                                         <?php
                                         // RETRIEVE ALL RECORDS THAT HAVEN'T BEEN APPROVED
                                         $retrieveQuery = "SELECT assLog.update_ID, assAd.username, assLog.birth_year, assLog.entity, assLog.new_value, "
-                                                . "assLog.prev_value, assLog.update_type, assLog.timestamp, assLog.attribute FROM AssistantLog_tentative_updates_on assLog, "
+                                                . "assLog.prev_value, assLog.update_type, assLog.timestamp, assLog.attribute, assLog.unique_keys FROM AssistantLog_tentative_updates_on assLog, "
                                                 . "assistant_admin_acc assAd "
                                                 . "WHERE assAd.userID = assLog.userID AND assLog.update_ID NOT IN (SELECT app.update_ID FROM Approves app)";
                                         $retrieveResult = sqlsrv_query($conn, $retrieveQuery);
@@ -143,9 +91,9 @@ and open the template in the editor.
                                         }
 
                                         foreach ($results as $row) {
-                                            $date_string = date_format($row['timestamp'], 'jS F Y, G:i A');  // format the date and time
+                                            $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
                                             echo '<tr>';
-                                            echo '<td><input type="checkbox" name="select[]" value="' . $row['update_ID'] . '"/></td>';
+                                            echo '<td><center><input type="checkbox" name="select[]" value="' . $row['update_ID'] . '"/></center</td>';
                                             echo '<td>' . $row['update_ID'] . '</td>';
                                             echo '<td>' . $row['username'] . '</td>';
                                             echo '<td>' . $row['birth_year'] . '</td>';
@@ -154,9 +102,11 @@ and open the template in the editor.
                                             echo '<td>' . $row['prev_value'] . '</td>';
                                             echo '<td>' . $row['update_type'] . '</td>';
                                             echo '<td>' . $row['attribute'] . '</td>';
+                                            echo '<td>' . $row['unique_keys'] . '</td>';
                                             echo '<td>' . $date_string . '</td>';
                                             echo '</tr>';
                                         } // END OF RETRIEVING ALL THE RECORDS THAT HAVENT BEEN APPROVED
+                                       
                                         ?> 
                                         <tr><td><button class="btn btn-info" style="width:100%;display: block;" name = "approve" type = "approve" value = "approve">Approve</button></td></tr>
 
