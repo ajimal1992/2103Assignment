@@ -21,7 +21,7 @@ if($userID == 1){
     
     $insert_admin = array(
         "userID" => $userID,
-        "birth_year" => $birth_year,
+        "birth_year" => (int)$birth_year,
         "entity" => "Mortality_under_a_year",
         "new_value" => $death_toll,
         "prev_value" => $prev_death_toll,
@@ -36,7 +36,7 @@ if($userID == 1){
 else{
     $insert_assit = array(
         "userID" => $userID,
-        "birth_year" => $birth_year,
+        "birth_year" => (int)$birth_year,
         "entity" => "Mortality_under_a_year",
         "new_value" => $death_toll,
         "prev_value" => $prev_death_toll,

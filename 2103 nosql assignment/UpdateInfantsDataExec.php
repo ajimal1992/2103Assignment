@@ -20,7 +20,7 @@ if($userID == 1){
     
     $insert_admin = array(
         "userID" => $userID,
-        "year" => $year,
+        "year" => (int)$year,
         "entity" => "infants",
         "new_value" => $value,
         "prev_value" => $prev_value,
@@ -34,7 +34,7 @@ if($userID == 1){
 else{
     $insert_assit = array(
         "userID" => $userID,
-        "year" => $year,
+        "year" => (int)$year,
         "entity" => "infants",
         "new_value" => $value,
         "prev_value" => $prev_value,

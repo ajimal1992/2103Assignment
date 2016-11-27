@@ -34,10 +34,8 @@ for ($x = 0; $x < $count; $x++) {
 $collection_father = $db->Father_births_by;
 $collection_exist = $collection_father->find(array('birth_year' => (int) $birth_year, 'child_gender' => $child_gender, 'race' => $race,
     'mth' => $mth));
-$total = count($collection_exist);
 
-
-if ($total > 0){//dont allow repeated birth_year/ race/ mth/ child_gender
+if ($collection_exist->count() > 0){//dont allow repeated birth_year/ race/ mth/ child_gender
     if ($race != $prev_race || $child_gender != $prev_child_gender || $mth != $prev_mth) {
         echo 'Update failed. Cannot have repeated _id/ birth_year/ race/ mth/ child_gender <br>';
     } else {
@@ -78,8 +76,8 @@ if ($total > 0){//dont allow repeated birth_year/ race/ mth/ child_gender
                 "unique_keys" => $inforID
             );
 
-            $collection_AdminLog_updates_on = $db->AssistantLog_tentative_updates_on;
-            $collection_AdminLog_updates_on->insert($insert_assist);
+            $collection_Assist_updates_on = $db->AssistantLog_tentative_updates_on;
+            $collection_Assist_updates_on->insert($insert_assist);
         }
     }
 }else{

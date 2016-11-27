@@ -50,7 +50,7 @@ if ($total > 0) {
     } else {
         if ($userID == 1) {
             $update_mother = array(
-                "birth_year" => $birth_year,
+                "birth_year" => (int)$birth_year,
                 "race" => $race,
                 "mth" => $mth,
                 "child_gender" => $child_gender,
@@ -60,7 +60,7 @@ if ($total > 0) {
 
             $insert_admin = array(
                 "userID" => $userID,
-                "birth_year" => $birth_year,
+                "birth_year" => (int)$birth_year,
                 "entity" => "Mother_births_by",
                 "new_value" => implode(", ", $all_of_new_val),
                 "prev_value" => implode(", ", $all_of_prev_val),
@@ -76,7 +76,7 @@ if ($total > 0) {
         } else {
             $insert_assist = array(
                 "userID" => $userID,
-                "birth_year" => $birth_year,
+                "birth_year" =>(int)$birth_year,
                 "entity" => "Mother_births_by",
                 "new_value" => implode(", ", $all_of_new_val),
                 "prev_value" => implode(", ", $all_of_prev_val),
@@ -85,8 +85,8 @@ if ($total > 0) {
                 "unique_keys" => $id
             );
 
-            $collection_AdminLog_updates_on = $db->AssistantLog_tentative_updates_on;
-            $collection_AdminLog_updates_on->insert($insert_assist);
+            $collection_Assist_updates_on = $db->AssistantLog_tentative_updates_on;
+            $collection_Assist_updates_on->insert($insert_assist);
         }
     }
 }
