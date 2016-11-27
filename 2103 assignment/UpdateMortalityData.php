@@ -22,7 +22,7 @@
         <!-- Custom Fonts -->
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-        <?php require_once('DB_Connection.php'); ?>
+        <?php require_once('Dbconnect.php'); ?>
     </head>
 
     <body>
@@ -66,7 +66,7 @@
                             }
                             $row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC);
                             ?>
-                            <h2>Infants Data</h2>
+                            <h2>Mortality Data</h2>
 
                             <form name="UpdateMortalityData" class="form-horizontal" action="UpdateMortalityDataExec.php" enctype="multipart/form-data" method='post'>
                                 <div class="form-group row">

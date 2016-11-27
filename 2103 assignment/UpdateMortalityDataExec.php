@@ -16,6 +16,15 @@ $all_of_new_val = array();
 $all_of_prev_val = array();
 $all_of_attribute = array();
 
+$count = count($new_val);
+for($x = 0; $x < $count; $x++){
+    if($new_val[$x] != $prev_val[$x]){
+        array_push($all_of_new_val, $new_val[$x]);
+        array_push($all_of_prev_val, $prev_val[$x]);
+        array_push($all_of_attribute, $attribute[$x]);
+    }
+}
+
 if($user['accountType'] == 'Admin'){
     echo 'Logged in as Admin';
 
@@ -24,14 +33,7 @@ if($user['accountType'] == 'Admin'){
     
     if ($result) {
         echo 'Update success!';
-        $count = count($new_val);
-        for($x = 0; $x < $count; $x++){
-            if($new_val[$x] != $prev_val[$x]){
-                array_push($all_of_new_val, $new_val[$x]);
-                array_push($all_of_prev_val, $prev_val[$x]);
-                array_push($all_of_attribute, $attribute[$x]);
-            }
-        }
+        
         $update_log = "insert into AdminLog_updates_on (userID, birth_year, entity, new_value, prev_value, update_type, attribute, unique_keys)
         values(?, ?, ?, ?, ?, ?, ?, ?)";
         $log_result = sqlsrv_query($conn, $update_log, array($user['userID'], $birth_year, 'Mortality', implode(", ", $all_of_new_val), implode(", ", $all_of_prev_val), 'update', implode(", ", $all_of_attribute), $ethnicity));
@@ -46,18 +48,9 @@ if($user['accountType'] == 'Admin'){
 }
 else{
     echo 'Logged in as Assistant';  
-        
-    $count = count($new_val);
-    for($x = 0; $x < $count; $x++){
-        if($new_val[$x] != $prev_val[$x]){
-            array_push($all_of_new_val, $new_val[$x]);
-            array_push($all_of_prev_val, $prev_val[$x]);
-            array_push($all_of_attribute, $attribute[$x]);
-        }
-    }
     $update_log = "insert into AssistantLog_tentative_updates_on (userID, birth_year, entity, new_value, prev_value, update_type, attribute, unique_keys)
     values(?, ?, ?, ?, ?, ?, ?, ?)";
-    $log_result = sqlsrv_query($conn, $update_log, array($user['userID'], $birth_year, 'Mortality', implode(", ", $all_of_new_val), implode(", ", $all_of_prev_val), 'update', implode(", ", $all_of_attribute), $ethnicity));
-       
+    $log_result = sqlsrv_query($conn, $update_log, array($user['userID'], $birth_year, 'Mortality', implode(", ", $all_of_new_val), implode(", ", $all_of_prev_val), 'update', implode(", ", $all_of_attribute), $ethnicity));    
 }
+header( "refresh:3; url=View.php" );
 ?>

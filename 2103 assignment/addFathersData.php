@@ -20,7 +20,8 @@
         <!-- Custom Fonts -->
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     </head>
-    <?php include 'header.inc.php'?>
+    <?php include 'header.inc.php';
+    require_once("Dbconnect.php");?>
     <body>
 
      <div id="wrapper">        

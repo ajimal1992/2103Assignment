@@ -32,7 +32,7 @@
                 <div class="row">
                         <div class="col-lg-12">
                             
-                            <h2>Infants Data</h2>
+                            <h2>Mothers Data</h2>
 
                             <form name="editDetails" class="form-horizontal" action="addMothersDataExec.php" enctype="multipart/form-data" method='post'>
                                 <div class="form-group row">
