@@ -15,8 +15,8 @@ $prev_mth = $_POST['prev_mth'];
 $prev_child_gender = $_POST['prev_child_gender'];
 $prev_live_births = $_POST['prev_live_births'];
 
-$new_val = array($race, $mth, $child_gender, $live_births);
-$prev_val = array($prev_race, $prev_mth, $prev_child_gender, $prev_live_births);
+$new_val = array($race, (int)$mth, $child_gender, (int)$live_births);
+$prev_val = array($prev_race, (int)$prev_mth, $prev_child_gender, (int)$prev_live_births);
 $attribute = array('race', 'mth', 'child_gender', 'live_births');
 $all_of_new_val = array();
 $all_of_prev_val = array();
@@ -41,11 +41,11 @@ if ($collection_exist->count() > 0){//dont allow repeated birth_year/ race/ mth/
     } else {
         if ($userID == 1) {
             $update_father = array(
-                "birth_year" => $birth_year,
+                "birth_year" => (int)$birth_year,
                 "race" => $race,
-                "mth" => $mth,
+                "mth" => (int)$mth,
                 "child_gender" => $child_gender,
-                "live_births" => $live_births
+                "live_births" => (int)$live_births
             );
             $collection_father = $db->Father_births_by;
             $collection_father->update(array("_id" => new MongoId($inforID)), $update_father);
@@ -53,13 +53,14 @@ if ($collection_exist->count() > 0){//dont allow repeated birth_year/ race/ mth/
             //UPDATE TO LOG  
             $insert_admin = array(
                 "userID" => $userID,
-                "birth_year" => $birth_year,
+                "birth_year" => (int)$birth_year,
                 "entity" => "Father_births_by",
                 "new_value" => implode(", ", $all_of_new_val),
                 "prev_value" => implode(", ", $all_of_prev_val),
                 "update_type" => "update",
                 "attribute" => implode(", ", $all_of_attribute),
-                "unique_keys" => $inforID
+                "unique_keys" => $inforID,
+                "timestamp" => new MongoDate()
             );
 
             $collection_AdminLog_updates_on = $db->AdminLog_updates_on;
@@ -67,13 +68,14 @@ if ($collection_exist->count() > 0){//dont allow repeated birth_year/ race/ mth/
         } else {//assistant admin
             $insert_assist = array(
                 "userID" => $userID,
-                "birth_year" => $birth_year,
+                "birth_year" => (int)$birth_year,
                 "entity" => "Father_births_by",
                 "new_value" => implode(", ", $all_of_new_val),
                 "prev_value" => implode(", ", $all_of_prev_val),
                 "update_type" => "update",
                 "attribute" => implode(", ", $all_of_attribute),
-                "unique_keys" => $inforID
+                "unique_keys" => $inforID,
+                "timestamp" => new MongoDate()
             );
 
             $collection_Assist_updates_on = $db->AssistantLog_tentative_updates_on;

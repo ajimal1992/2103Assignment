@@ -22,10 +22,11 @@ if($userID == 1){
         "userID" => $userID,
         "year" => (int)$year,
         "entity" => "infants",
-        "new_value" => $value,
-        "prev_value" => $prev_value,
+        "new_value" => (int)$value,
+        "prev_value" => (int)$prev_value,
         "update_type" => "update",
-        "attribute" => "value"
+        "attribute" => "value",
+        "timestamp" => new MongoDate()
     );
     
     $collection_AdminLog_updates_on = $db->AdminLog_updates_on;
@@ -36,10 +37,11 @@ else{
         "userID" => $userID,
         "year" => (int)$year,
         "entity" => "infants",
-        "new_value" => $value,
-        "prev_value" => $prev_value,
+        "new_value" => (int)$value,
+        "prev_value" => (int)$prev_value,
         "update_type" => "update",
         "attribute" => "value",
+        "timestamp" => new MongoDate()
     );
     
     $collection_AdminLog_updates_on = $db->AssistantLog_tentative_updates_on;

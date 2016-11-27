@@ -7,7 +7,7 @@ $birth_year = $_POST['birth_year'];
 $ethnicity = $_POST['ethnicity'];
 $death_toll = $_POST['death_toll'];
 
-$new_val = array($ethnicity, $death_toll);
+$new_val = array($ethnicity, (int)$death_toll);
 $attribute = array('ethnicity', 'death_toll');
 $all_of_new_val = array();
 $all_of_attribute = array();
@@ -34,7 +34,7 @@ if ($collection_weak->count() <= 0) {
             $insert_mortality = array(
                 "birth_year" => (int)$birth_year,
                 "ethnicity" => $ethnicity,
-                "death_toll" => $death_toll
+                "death_toll" => (int)$death_toll
             );
 
             $collection_mortality->insert($insert_mortality);
@@ -47,7 +47,8 @@ if ($collection_weak->count() <= 0) {
                 "entity" => "Mortality_under_a_year",
                 "new_value" => implode(", ", $all_of_new_val),
                 "update_type" => "insert",
-                "attribute" => implode(", ", $all_of_attribute)
+                "attribute" => implode(", ", $all_of_attribute),
+                "timestamp" => new MongoDate()
             );
 
             $collection_AdminLog_updates_on = $db->AdminLog_updates_on;
@@ -62,7 +63,8 @@ if ($collection_weak->count() <= 0) {
                 "entity" => "Mortality_under_a_year",
                 "new_value" => implode(", ", $all_of_new_val),
                 "update_type" => "insert",
-                "attribute" => implode(", ", $all_of_attribute)
+                "attribute" => implode(", ", $all_of_attribute),
+                "timestamp" => new MongoDate()
             );
 
             $collection_Assist_updates_on = $db->AdminLog_updates_on;

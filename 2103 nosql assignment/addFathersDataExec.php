@@ -9,7 +9,7 @@ $race = $_POST['race'];
 $mth = $_POST['mth'];
 $live_births = $_POST['live_births'];
 
-$new_val = array($race, (int)$mth, $child_gender, $live_births);
+$new_val = array($race, (int)$mth, $child_gender, (int)$live_births);
 $attribute = array('race', 'mth', 'child_gender', 'live_births');
 $all_of_new_val = array();
 $all_of_attribute = array();
@@ -38,7 +38,7 @@ if ($collection_weak->count() <= 0) {
                 "race" => $race,
                 "mth" => (int)$mth,
                 "child_gender" => $child_gender,
-                "live_births" => $live_births
+                "live_births" => (int)$live_births
             );
             $collection_father->insert($insert_father);
             echo 'Insert to Father_births_by successful! <br>';
@@ -50,7 +50,8 @@ if ($collection_weak->count() <= 0) {
                 "entity" => "Father_births_by",
                 "new_value" => implode(", ", $all_of_new_val),
                 "update_type" => "insert",
-                "attribute" => implode(", ", $all_of_attribute)
+                "attribute" => implode(", ", $all_of_attribute),
+                "timestamp" => new MongoDate()
             );
 
             $collection_AdminLog_updates_on = $db->AdminLog_updates_on;
@@ -63,7 +64,8 @@ if ($collection_weak->count() <= 0) {
                 "entity" => "Father_births_by",
                 "new_value" => implode(", ", $all_of_new_val),
                 "update_type" => "update",
-                "attribute" => implode(", ", $all_of_attribute)
+                "attribute" => implode(", ", $all_of_attribute),
+                "timestamp" => new MongoDate()
             );
 
             $collection_Assist_updates_on = $db->AssistantLog_tentative_updates_on;

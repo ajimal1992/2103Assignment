@@ -12,7 +12,7 @@ if($userID == 1){
     $tempdoc = array(
     "birth_year" => (int)$birth_year,
     "ethnicity" => $ethnicity,
-    "death_toll" => $death_toll
+    "death_toll" => (int)$death_toll
     );
     
     $collection_mortality = $db->Mortality_under_a_year;
@@ -23,11 +23,12 @@ if($userID == 1){
         "userID" => $userID,
         "birth_year" => (int)$birth_year,
         "entity" => "Mortality_under_a_year",
-        "new_value" => $death_toll,
-        "prev_value" => $prev_death_toll,
+        "new_value" => (int)$death_toll,
+        "prev_value" => (int)$prev_death_toll,
         "update_type" => "update",
         "attribute" => "death_toll",
-        "unique_keys" => $ethnicity
+        "unique_keys" => $ethnicity,
+        "timestamp" => new MongoDate()
     );
     
     $collection_AdminLog_updates_on = $db->AdminLog_updates_on;
@@ -38,11 +39,12 @@ else{
         "userID" => $userID,
         "birth_year" => (int)$birth_year,
         "entity" => "Mortality_under_a_year",
-        "new_value" => $death_toll,
-        "prev_value" => $prev_death_toll,
+        "new_value" => (int)$death_toll,
+        "prev_value" => (int)$prev_death_toll,
         "update_type" => "update",
         "attribute" => "death_toll",
-        "unique_keys" => $ethnicity
+        "unique_keys" => $ethnicity,
+        "timestamp" => new MongoDate()
     );
     
     $collection_AdminLog_updates_on = $db->AssistantLog_tentative_updates_on;

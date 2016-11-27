@@ -1,4 +1,5 @@
-<?php
+it
+    <?php
 require_once('Dbconnect.php');
 $userID = 1;
 
@@ -13,7 +14,7 @@ $tempdoc = array(
 $collection = $db->infants;
 $collection_check = $collection->find(array('year' => (int)$year));
 
-$total_check_exist = count($collection_check);
+
 if($collection_check->count() > 0){
     echo $collection_check->count() . '<br>';
     echo '<br> Record already exists in DB...';
@@ -29,7 +30,8 @@ else{
             "entity" => "infants",
             "new_value" => (int)$value,
             "update_type" => "insert",
-            "attribute" => "value"
+            "attribute" => "value",
+            "timestamp" => new MongoDate()
         );
         
         $collection_AdminLog_updates_on = $db->AdminLog_updates_on;
