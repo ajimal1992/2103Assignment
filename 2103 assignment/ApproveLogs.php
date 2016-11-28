@@ -1,5 +1,5 @@
 <?php
-include ("database.php");
+include ("Dbconnect.php");
 ?>
 
 <!DOCTYPE html>
@@ -26,10 +26,10 @@ and open the template in the editor.
         <!-- Custom Fonts -->
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-        <link href="css/customCSS.css" rel="stylesheet">
+        <!--<link href="css/customCSS.css" rel="stylesheet">-->
 
     </head>
-    <body id="AdminLog">
+    <body>
         <div id="wrapper">
 
             <?php include "header.php" ?>
@@ -60,56 +60,58 @@ and open the template in the editor.
                             </u></p>
                             <div class="table-responsive">
                                 <form method="post" action="ApprovalQueries.php">
-                                    <table id="myTable">
-                                        <tr>
-                                            <th><center>Select</center></th>
-                                            <th>No.</th>
-                                            <th>Name</th>
-                                            <th>Birth Year</th>
-                                            <th>Entity</th>
-                                            <th>New Value</th>
-                                            <th>Prev Value</th>
-                                            <th>Update type</th>
-                                            <th>Attribute</th>
-                                            <th>Unique Keys</th>
-                                            <th>Date & Time Stamp</th>            
-                                        </tr>
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th><center>Select</center></th>
+                                                <th>No.</th>
+                                                <th>Name</th>
+                                                <th>Birth Year</th>
+                                                <th>Entity</th>
+                                                <th>New Value</th>
+                                                <th>Prev Value</th>
+                                                <th>Update type</th>
+                                                <th>Attribute</th>
+                                                <th>Unique Keys</th>
+                                                <th>Date & Time Stamp</th>            
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            // RETRIEVE ALL RECORDS THAT HAVEN'T BEEN APPROVED
+                                            $retrieveQuery = "SELECT assLog.update_ID, assAd.username, assLog.birth_year, assLog.entity, assLog.new_value, "
+                                                    . "assLog.prev_value, assLog.update_type, assLog.timestamp, assLog.attribute, assLog.unique_keys FROM AssistantLog_tentative_updates_on assLog, "
+                                                    . "assistant_admin_acc assAd "
+                                                    . "WHERE assAd.userID = assLog.userID AND assLog.update_ID NOT IN (SELECT app.update_ID FROM Approves app)";
+                                            $retrieveResult = sqlsrv_query($conn, $retrieveQuery);
+                                            if ($retrieveResult === false) {
+                                                die(print_r(sqlsrv_errors(), true));
+                                            }
+                                            $results = [];
+                                            while ($retrieveRow = sqlsrv_fetch_array($retrieveResult, SQLSRV_FETCH_ASSOC)) {
+                                                $results[] = $retrieveRow;
+                                            }
 
-                                        <?php
-                                        // RETRIEVE ALL RECORDS THAT HAVEN'T BEEN APPROVED
-                                        $retrieveQuery = "SELECT assLog.update_ID, assAd.username, assLog.birth_year, assLog.entity, assLog.new_value, "
-                                                . "assLog.prev_value, assLog.update_type, assLog.timestamp, assLog.attribute, assLog.unique_keys FROM AssistantLog_tentative_updates_on assLog, "
-                                                . "assistant_admin_acc assAd "
-                                                . "WHERE assAd.userID = assLog.userID AND assLog.update_ID NOT IN (SELECT app.update_ID FROM Approves app)";
-                                        $retrieveResult = sqlsrv_query($conn, $retrieveQuery);
-                                        if ($retrieveResult === false) {
-                                            die(print_r(sqlsrv_errors(), true));
-                                        }
-                                        $results = [];
-                                        while ($retrieveRow = sqlsrv_fetch_array($retrieveResult, SQLSRV_FETCH_ASSOC)) {
-                                            $results[] = $retrieveRow;
-                                        }
+                                            foreach ($results as $row) {
+                                                $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
+                                                echo '<tr>';
+                                                echo '<td><center><input type="checkbox" name="select[]" value="' . $row['update_ID'] . '"/></center</td>';
+                                                echo '<td>' . $row['update_ID'] . '</td>';
+                                                echo '<td>' . $row['username'] . '</td>';
+                                                echo '<td>' . $row['birth_year'] . '</td>';
+                                                echo '<td>' . $row['entity'] . '</td>';
+                                                echo '<td>' . $row['new_value'] . '</td>';
+                                                echo '<td>' . $row['prev_value'] . '</td>';
+                                                echo '<td>' . $row['update_type'] . '</td>';
+                                                echo '<td>' . $row['attribute'] . '</td>';
+                                                echo '<td>' . $row['unique_keys'] . '</td>';
+                                                echo '<td>' . $date_string . '</td>';
+                                                echo '</tr>';
+                                            } // END OF RETRIEVING ALL THE RECORDS THAT HAVENT BEEN APPROVED
+                                            ?> 
 
-                                        foreach ($results as $row) {
-                                            $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
-                                            echo '<tr>';
-                                            echo '<td><center><input type="checkbox" name="select[]" value="' . $row['update_ID'] . '"/></center</td>';
-                                            echo '<td>' . $row['update_ID'] . '</td>';
-                                            echo '<td>' . $row['username'] . '</td>';
-                                            echo '<td>' . $row['birth_year'] . '</td>';
-                                            echo '<td>' . $row['entity'] . '</td>';
-                                            echo '<td>' . $row['new_value'] . '</td>';
-                                            echo '<td>' . $row['prev_value'] . '</td>';
-                                            echo '<td>' . $row['update_type'] . '</td>';
-                                            echo '<td>' . $row['attribute'] . '</td>';
-                                            echo '<td>' . $row['unique_keys'] . '</td>';
-                                            echo '<td>' . $date_string . '</td>';
-                                            echo '</tr>';
-                                        } // END OF RETRIEVING ALL THE RECORDS THAT HAVENT BEEN APPROVED
-                                       
-                                        ?> 
-                                        <tr><td><button class="btn btn-info" style="width:100%;display: block;" name = "approve" type = "approve" value = "approve">Approve</button></td></tr>
-
+                                            <tr><td><button class="btn btn-info" style="width:100%;display: block;" name = "approve" type = "approve" value = "approve">Approve</button></td></tr>
+                                        </tbody>
                                     </table>
                                 </form>
 

@@ -1,23 +1,25 @@
 <?php
-
-include ("database.php");
+include ("Dbconnect.php");
+require_once('grabID.php');
 ?>
 <?php
 
 // if clicked approve button and selected checkbox
-if (isset($_POST['approve']) && isset($_POST['select'])) {
+if (isset($_POST['approve']) && isset($_POST['select']) && $user['accountType'] == 'Admin') {
     foreach ($_POST['select'] as $check) {
-
+        
         $approvingQuery = "SELECT * FROM AssistantLog_tentative_updates_on WHERE update_ID = $check";
         $approvingResult = sqlsrv_query($conn, $approvingQuery);
         if ($approvingResult === false) {
             die(print_r(sqlsrv_errors(), true));
         }
         $results1 = [];
-        // use variable to store the checked table row
+
         while ($approvingRow = sqlsrv_fetch_array($approvingResult, SQLSRV_FETCH_ASSOC)) {
             $results1[] = $approvingRow;
         }
+
+        // use variable to store the checked table row
         foreach ($results1 as $row) {
             $updateID = $row['update_ID'];
             $AssistUserID = $row['userID'];
@@ -32,14 +34,32 @@ if (isset($_POST['approve']) && isset($_POST['select'])) {
 
         // approve to UPDATE the respective entity and attribute
         if ($updateType == "update") {
-            $updateQuery = "$updateType $entity SET $attribute = $newValue WHERE birth_year = $birthYear";
+            // Make it to array for new value
+            $splitWords = explode(',', $newValue);
+            $d = array();
+            foreach ($splitWords as $name) {
+                $d[] = '' . $name . '';
+            }
+
+            // Make it to array for attribute
+            $splitAttribute = explode(',', $attribute);
+            $a = array();
+            foreach ($splitAttribute as $name) {
+                $a[] = '' . $name . ' = ?';
+            }
+            $latestAttribute = implode(",", $a);
+
+            $updateQuery = "$updateType $entity SET $latestAttribute WHERE birth_year = $birthYear";
+            
             if (ctype_digit($uniqueKey) && strlen($uniqueKey) >= 1) {
                 $updateQuery .= " AND inforID = $uniqueKey";
             }
             if (!ctype_digit($uniqueKey) && strlen($uniqueKey) >= 1) {
                 $updateQuery .= " AND ethnicity = '$uniqueKey'";
             }
-            $updateResult = sqlsrv_query($conn, $updateQuery);
+            
+            $updateResult = sqlsrv_query($conn, $updateQuery, $d);
+            
             if ($updateResult === false) {
                 die(print_r(sqlsrv_errors(), true));
             }
@@ -62,28 +82,34 @@ if (isset($_POST['approve']) && isset($_POST['select'])) {
         }
 
         // approve to INSERT the respective entity and attribute
-        if (($updateType == "insert")) {
+        if (( $updateType == "insert")) {
             $splitWords = explode(',', $newValue);
             $d = array();
             foreach ($splitWords as $name) {
                 $d[] = '\'' . $name . '\'';
             }
-            $latestNewValue = implode(",", $d);
-            $insertQuery = "$updateType INTO $entity (birth_year,$attribute) VALUES ('$birthYear',$latestNewValue)";
+            
+            $latestNewValue = implode(", ", $d);
+            $insertQuery = "$updateType INTO $entity (birth_year, $attribute) VALUES ('$birthYear', $latestNewValue)";
             $insertResult = sqlsrv_query($conn, $insertQuery);
             if ($insertResult === false) {
                 die(print_r(sqlsrv_errors(), true));
             }
         }
 
+        $userID = $user['userID'];
         // Insert the admin who approved the assistant logs
         // Assume admin id is 1.
-        $approvedQuery = "INSERT INTO Approves (update_ID, admin_userID, assist_userID) VALUES ($updateID,1,$AssistUserID)";
+        $approvedQuery = "INSERT INTO Approves (update_ID, admin_userID, assist_userID) VALUES ($updateID, $userID, $AssistUserID)";
         $approvedResult = sqlsrv_query($conn, $approvedQuery);
         if ($approvedResult === false) {
             die(print_r(sqlsrv_errors(), true));
         }
     }
     header("Location:ApproveLogs.php");
+} else {
+    echo '<script language="javascript">';
+    echo 'alert("You are not an Admin!"); location.href="ApproveLogs.php"';
+    echo '</script>';
 }
 ?>

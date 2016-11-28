@@ -1,5 +1,5 @@
 <?php
-include ("database.php");
+include ("Dbconnect.php");
 ?>
 <!DOCTYPE html>
 <!--
@@ -55,7 +55,8 @@ and open the template in the editor.
                                     ?>
                                 </u></p>
                                 <div class="table-responsive">
-                                    <table id="myTable">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
                                         <tr>
                                             <th>No.</th>
                                             <th>Name</th>
@@ -68,7 +69,8 @@ and open the template in the editor.
                                             <th>Unique Keys</th>
                                             <th>Date & Time Stamp</th>            
                                         </tr>
-
+                                        </thead>
+                                        <tbody>
                                         <?php
                                          // SEARCHING FUNCTION 
                                         if (isset($_POST['submit'])) {
@@ -135,6 +137,7 @@ and open the template in the editor.
                                              
                                         }  // END OF RETRIEVE ALL APPROVED RECORDS WITHOUT SEARCHING FUNCTION
                                         ?>
+                                        </tbody>
                                 </table>
                             </div>
                         </div>
