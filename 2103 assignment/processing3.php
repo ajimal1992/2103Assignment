@@ -60,12 +60,13 @@
 				<ul class="nav nav-tabs">
                         <li><a data-toggle="tab" href="#home">Infants</a></li>
                         <li><a data-toggle="tab" href="#Mortality">Mortality</a></li>
-                        <li class="active"><a data-toggle="tab" href="#Mother">Mother</a></li>
-                        <li><a data-toggle="tab" href="#Father">Father</a></li>
+                        <li><a data-toggle="tab" href="#Mother">Mother</a></li>
+                        <li class="active"><a data-toggle="tab" href="#Father">Father</a></li>
                     </ul>
 			<div class="tab-content">
                 <!-- INFANTS TABLE -->
 				<div id="home" class="tab-pane fade">
+				
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="scroll">
@@ -177,7 +178,7 @@
                         
                     </div>
                 </div>
-				<div id="Mother" class="tab-pane fade in active">
+				<div id="Mother" class="tab-pane fade">
                 <!-- MOTHERS TABLE -->
                 <div class="col-lg-12">
 				<br>
@@ -189,7 +190,7 @@
   <option name=year value="2015">2015</option>
 </select><br><br>
 				
-<input type="submit">
+<input type="submit" ><a data-toggle="tab" href="#Mother"></a>
   </form>
                     <div class="scroll">
                         <h2>Mother
@@ -212,10 +213,10 @@
                                 </thead>
                                 <tbody>
                                     <?php
-									$year = $_POST['year'];
-                                   $mothers_sql = "select * from Mother_births_by where birth_year = '$year'";
+									//$year = $_POST['year'];
+                                   // $mothers_sql = "select * from Mother_births_by where birth_year = '$year'";
 									
-                                   
+                                    $mothers_sql = "select * from Mother_births_by";
                                     $mothers_query = sqlsrv_query($conn, $mothers_sql);
                                     if ($mothers_query === false) {
                                         die(print_r(sqlsrv_errors(), true));
@@ -247,7 +248,8 @@
 			
                 
                 <!-- FATHERS TABLE -->
-					<div id="Father" class="tab-pane fade">
+				
+					<div id="Father" class="tab-pane fade in active">
                 <div class="col-lg-12">
 								<br>
 									<form action="processing3.php" method="POST">
@@ -284,10 +286,9 @@
                                     </tr>
                                 </thead>
                                 <?php
-								//$yeara = $_POST['yeara'];
-                                //$fathers_sql = "select * from Father_births_by where birth_year = '$yeara'";
-								// $yeara = $_POST['yeara'];
-                                $fathers_sql = "select * from Father_births_by";
+								$yeara = $_POST['yeara'];
+                                $fathers_sql = "select * from Father_births_by where birth_year = '$yeara'";
+								
                                 $fathers_query = sqlsrv_query($conn, $fathers_sql);
                                 if ($fathers_query === false) {
                                         die(print_r(sqlsrv_errors(), true));

@@ -49,7 +49,7 @@ if( isset($_GET['inforID']) ) {
 					values(?, ?, ?, ?, ?, ?, ?, ?)";
 					$log_result = sqlsrv_query($conn, $update_log, array($user['userID'],$fatherbr, 'Father_births_by', '', '', 'delete', '', $inforID));
 				
-			
+			header( "Location: View.php#Father" );
 		}
 	else{
 			echo "No duplicates key values are allowed... . <br>";
@@ -82,7 +82,8 @@ if($user['accountType'] == 'Admin'){
       $update_log = "insert into AdminLog_updates_on (userID, birth_year, entity, new_value, prev_value, update_type, attribute, unique_keys)
             values(?, ?, ?, ?, ?, ?, ?, ?)";
             $log_result = sqlsrv_query($conn, $update_log, array($user['userID'], NULL, 'infants', '', $infantID, 'delete', '', ''));
-        }
+		header( "Location: View.php#home" );
+	   }
 	
 else{
     echo 'Logged in as Asisstant';
@@ -176,7 +177,7 @@ else{
 
 }
 
-	header( "Location: View.php" );
+	//header( "Location: View.php" );
 	?>
 
 

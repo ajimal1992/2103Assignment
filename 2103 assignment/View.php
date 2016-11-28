@@ -51,14 +51,21 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Tables
+                             View Data Tables
                         </h1>
                         
                     </div>
                 </div>
                 <!-- End of Page Heading -->
-
+				<ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#home">Infants</a></li>
+                        <li><a data-toggle="tab" href="#Mortality">Mortality</a></li>
+                        <li><a data-toggle="tab" href="#Mother">Mother</a></li>
+                        <li><a data-toggle="tab" href="#Father">Father</a></li>
+                    </ul>
+			<div class="tab-content">
                 <!-- INFANTS TABLE -->
+				<div id="home" class="tab-pane fade in active">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="scroll">
@@ -99,9 +106,11 @@
                         </div>
                     </div>
                 </div>
+				</div>
                 <!-- END OF INFANTS TABLE -->
                 
                 <!-- MORTALITY TABLE -->    
+				<div id="Mortality" class="tab-pane fade">
                 <div class="col-lg-7">
                     <div class="scroll">
                         <h2>
@@ -151,14 +160,28 @@
                         </div>
                     </div>
                 </div>
+				</div>
                 <!-- END OF MORTALITY TABLE -->
                 <div class="row">
                     <div class="col-lg-12">
                         
-                            <h2>Search By year</h2>
+                            
                             <div class="table-responsive">
                                
-<form action="processing2.php" method="POST">
+
+  
+  
+
+
+                            </div>
+                        
+                    </div>
+                </div>
+				<div id="Mother" class="tab-pane fade">
+                <!-- MOTHERS TABLE -->
+                <div class="col-lg-12">
+				<br>
+				<form action="processing2.php" method="POST">
                 Search for Mother <select name=year>
   <option name=year value="2012">2012</option>
   <option name=year value="2013">2013</option>
@@ -166,26 +189,8 @@
   <option name=year value="2015">2015</option>
 </select><br><br>
 				
-
-  Search for Father:
-
-  
-<select name=yeara>
-  <option name=yeara value="2012">2012</option>
-  <option name=yeara value="2013">2013</option>
-  <option name=yeara value="2014">2014</option>
-  <option name=yeara value="2015">2015</option>
-</select>
 <input type="submit">
   </form>
-
-
-                            </div>
-                        
-                    </div>
-                </div>
-                <!-- MOTHERS TABLE -->
-                <div class="col-lg-12">
                     <div class="scroll">
                         <h2>Mother
                         <div>
@@ -207,7 +212,9 @@
                                 </thead>
                                 <tbody>
                                     <?php
-									// $year = $_POST['year'];
+									//$year = $_POST['year'];
+                                   // $mothers_sql = "select * from Mother_births_by where birth_year = '$year'";
+									
                                     $mothers_sql = "select * from Mother_births_by";
                                     $mothers_query = sqlsrv_query($conn, $mothers_sql);
                                     if ($mothers_query === false) {
@@ -235,11 +242,28 @@
                         </div>
                     </div>
                 </div>
+				</div>
                 <!-- END OF MOTHERS TABLE -->
+			
                 
                 <!-- FATHERS TABLE -->
+					<div id="Father" class="tab-pane fade">
                 <div class="col-lg-12">
+								<br>
+									<form action="processing3.php" method="POST">
+  Search for Father:
+
+  
+<select name=yeara>
+  <option name=yeara value="2012">2012</option>
+  <option name=yeara value="2013">2013</option>
+  <option name=yeara value="2014">2014</option>
+  <option name=yeara value="2015">2015</option>
+</select>
+<input type="submit">
+  </form>
                     <div class="scroll">
+	
                         <h2>
                             Father
                             <div>
@@ -260,6 +284,8 @@
                                     </tr>
                                 </thead>
                                 <?php
+								//$yeara = $_POST['yeara'];
+                                //$fathers_sql = "select * from Father_births_by where birth_year = '$yeara'";
 								// $yeara = $_POST['yeara'];
                                 $fathers_sql = "select * from Father_births_by";
                                 $fathers_query = sqlsrv_query($conn, $fathers_sql);
@@ -286,8 +312,9 @@
                         </div>
                     </div>
                 </div>
+				</div>
                 <!-- END OF FATHERS TABLE -->
-                
+                </div>
             </div>
             <!-- /.container-fluid -->
         </div>
