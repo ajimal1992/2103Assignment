@@ -29,7 +29,7 @@
         <div id="wrapper"> 
             <header>
             <?php
-            include 'header.inc.php';
+            include 'header.php';
             $location = 'EditData';
             $inforID = $_GET['_id'];
             ?>

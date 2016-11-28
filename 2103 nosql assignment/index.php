@@ -22,7 +22,7 @@
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         
         <?php require_once('Dbconnect.php'); 
-        include'header.inc.php'?>
+        include'header.php'?>
     </head>
     
     <body>
@@ -90,10 +90,10 @@
                                     foreach($cursor as $document) {
                                     ?>
                                     <tr>
-                                        <td><?php echo $document["year"]; ?></td>
+                                        <td><?php echo $document["birth_year"]; ?></td>
                                         <td><?php echo $document["value"]; ?></td>
                                         <!-- ADD IN DELETE HREF HERE -->
-                                        <td><a href="UpdateInfantsData.php?year=<?php echo $document["year"]; ?>">Edit</a></td> 
+                                        <td><a href="UpdateInfantsData.php?year=<?php echo $document["birth_year"]; ?>">Edit</a></td> 
                                     </tr>   <?php } ?>
                                 </tbody>
                                 </table>

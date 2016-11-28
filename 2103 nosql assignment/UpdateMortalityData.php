@@ -29,7 +29,7 @@
         <div id="wrapper"> 
             <header>
             <?php
-            include 'header.inc.php';
+            include 'header.php';
             $location = 'EditData';
             $birth_year = $_GET['birth_year'];
             $ethnicity = $_GET['ethnicity'];
