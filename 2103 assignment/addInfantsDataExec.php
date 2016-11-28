@@ -22,7 +22,7 @@ if ($row) {
 
         //Update admin log
         $update_log = "insert into AdminLog_updates_on (userID, birth_year, entity, new_value, update_type, attribute)
-                values(?, ?, ?, ?, ?, ?, ?)";
+                values(?, ?, ?, ?, ?, ?)";
         $log_result = sqlsrv_query($conn, $update_log, array($user['userID'], $birth_year, 'infants', $total, 'insert', 'total'));
         echo 'Update to Admin log successful!';
     }//end if admin
@@ -31,5 +31,5 @@ if ($row) {
         echo 'Only Admin can insert infant...';
     }//end if assistant
 }
-header('View.php');
+header( "refresh:3; url=View.php" );
 ?>

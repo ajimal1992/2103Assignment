@@ -1,5 +1,5 @@
 	<?php
-	require_once('DB_Connection.php'); 
+	require_once('Dbconnect.php'); 
 	require_once('grabID.php');
 
 	$inforID = $_GET['inforID'];
@@ -71,30 +71,18 @@ else{
 
 if( isset($_GET['infantID'], $_GET['total']) )  {
 if($user['accountType'] == 'Admin'){
-		echo 'Logged in as Admin';
+		echo 'Logged in as Admin';				
 				
-				
-				
-		$sql2 = "Delete FROM infants WHERE birth_year = $infantID";
-			   
-			
+		$sql2 = "Delete FROM infants WHERE birth_year = $infantID";			
 		
-		$result = sqlsrv_query($conn, $sql2, array($infantID,$total,));
-		if ($result) {
-			echo 'Delete success!';       
-			
-			$update_log = "insert into AdminLog_updates_on (userID, birth_year, entity, new_value, prev_value, update_type, attribute, unique_keys)
+		$result = sqlsrv_query($conn, $sql2);
+		// echo("<script>console.log('PHP:');</script>");	
+      echo 'Delete success!';       
+      
+      $update_log = "insert into AdminLog_updates_on (userID, birth_year, entity, new_value, prev_value, update_type, attribute, unique_keys)
             values(?, ?, ?, ?, ?, ?, ?, ?)";
-            $log_result = sqlsrv_query($conn, $update_log, array($user['userID'], $infantID, 'infants', '', '', 'delete', '', ''));
-        
-				
-			
-		}
-	else{
-			echo "No duplicates key values are allowed... . <br>";
-			die(print_r(sqlsrv_errors(), true));
-		}
-	}
+            $log_result = sqlsrv_query($conn, $update_log, array($user['userID'], NULL, 'infants', '', $infantID, 'delete', '', ''));
+        }
 	
 else{
     echo 'Logged in as Asisstant';
@@ -102,7 +90,7 @@ else{
 			
             $update_log = "insert into AssistantLog_tentative_updates_on (userID, birth_year, entity, new_value, prev_value, update_type, attribute, unique_keys)
             values(?, ?, ?, ?, ?, ?, ?, ?)";
-            $log_result = sqlsrv_query($conn, $update_log, array($user['userID'], $infantID, 'infants', '', '', 'delete', '', ''));
+            $log_result = sqlsrv_query($conn, $update_log, array($user['userID'], $infantID, 'infants', '', $infantID, 'delete', '', ''));
         
     
 }
@@ -190,5 +178,6 @@ else{
 
 	header( "Location: View.php" );
 	?>
+
 
 

@@ -1,9 +1,8 @@
 <?php
-require_once('authenticate.php'); 
-//session_start();
+session_start();
 //$_SESSION['username'] = 'ajimal';
 
-//require_once('authenticate.php');
+// require_once('authenticate.php');
 $username = $_SESSION['username'];
 //SELECT userID,  'Admin'  as accountType FROM admin_account 
 //WHERE  pwd='$pw' AND username='$name'

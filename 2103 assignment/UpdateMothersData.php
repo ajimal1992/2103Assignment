@@ -8,7 +8,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>SB Admin - Bootstrap Admin Template</title>
+        <title>Infant Watch</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -29,7 +29,7 @@
         <div id="wrapper"> 
             <header>
             <?php
-            include 'header.inc.php';
+            include 'header.php';
             $location = 'EditData';
             $inforID = $_GET['inforID'];
             ?>
@@ -42,14 +42,7 @@
                             <h1 class="page-header">
                                 Tables
                             </h1>
-                            <ol class="breadcrumb">
-                                <li>
-                                    <i class="fa fa-dashboard"></i>  <a href="index.php">Dashboard</a>
-                                </li>
-                                <li class="active">
-                                    <i class="fa fa-table"></i> Tables
-                                </li>
-                            </ol>
+                            
                         </div>
                     </div>
                     <!-- End of Page Heading -->                  

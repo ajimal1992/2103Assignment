@@ -70,5 +70,5 @@ else {
     }
 }//end else
 
-header('View.php');
+header( "refresh:3; url=View.php" );
 ?>

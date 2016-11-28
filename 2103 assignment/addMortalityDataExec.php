@@ -55,5 +55,5 @@ if ($row) {
         echo "<br>Add infant of '$birth_year' first...";
     }
 }
-header('View.php');
+header( "refresh:3; url=View.php" );
 ?>

@@ -7,6 +7,7 @@
         <meta name="author" content="">
 
         <title>SB Admin - Bootstrap Admin Template</title>
+        <link href="css.css" rel="stylesheet">
 
         <!-- Bootstrap Core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -20,16 +21,7 @@
         <!-- Custom Fonts -->
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         
-        <?php require_once('DB_Connection.php'); 
-		require_once('grabID.php');
-		
-		
-    
-
-		
-		
-		?>
-		
+        <?php require_once('Dbconnect.php'); ?>
     </head>
     
     <body>
@@ -76,19 +68,12 @@
                 <!-- INFANTS TABLE -->
                 <div class="row">
                     <div class="col-lg-5">
-						<h2>Infants</h2><?php if($user['accountType'] == 'Admin'){
-    echo 'Logged in as Admin';
-
-
-    
-}
-else{
-    echo 'Logged in as Asisstant';
-    
-    
-        }?>
                         <div class="scroll">
-                            
+                            <h2>Infants
+                                <div>
+                                    <a href="addInfantsData.php" class="btn btn-primary">Add New Infants Record</a>
+                                </div>
+                            </h2>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover">
                                     <thead>
@@ -112,12 +97,9 @@ else{
                                         <td><?php echo $row_infants['birth_year']; ?></td>
                                         <td><?php echo $row_infants['total']; ?></td>
                                         <!-- ADD IN DELETE HREF HERE -->
-											
-										
-                                        <td><a href="EditData.php?birth_year=<?php echo $row_infants['birth_year']; ?>">Edit</a></td> 
-										<td><a href="delete2.php?infantID=<?php echo $row_infants['birth_year'];?>&itotal=<?php echo $row_infants['total']?>"onclick="return deletechecked();">Delete</a></td>
+                                        <td><a href="UpdateInfantsData.php?birth_year=<?php echo $row_infants['birth_year']; ?>">Edit</a></td> 
+										<td><a href="delete2.php?infantID=<?php echo $row_infants['birth_year'];?>&total=<?php echo $row_infants['total']?>"onclick="return deletechecked();">Delete</a></td>
                                     </tr>   <?php } ?>
-									
                                 </tbody>
                                 </table>
                             </div>
@@ -127,11 +109,14 @@ else{
                 <!-- END OF INFANTS TABLE -->
                 
                 <!-- MORTALITY TABLE -->    
-				<div class="row">
                 <div class="col-lg-7">
-				<h2>Mortality_under_a_year</h2>
                     <div class="scroll">
-                        
+                        <h2>
+                            Mortality_under_a_year
+                            <div>
+                                <a href="addMortalityData.php" class="btn btn-primary">Add New Mortality Record</a>
+                            </div>
+                        </h2>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover">
                                 <thead>
@@ -157,25 +142,24 @@ else{
                                         <td><?php echo $row_mortality['ethnicity']; ?></td>
                                         <td><?php echo $row_mortality['death_toll']; ?></td>
                                         <!-- ADD IN DELETE HREF HERE -->
-                                        <td><a href="EditData.php?birth_year=<?php echo $row_mortality['birth_year']; ?> 
 										
+                                        <td><a href="UpdateMortalityData.php?birth_year=<?php echo $row_mortality['birth_year']; ?> 
                                                &ethnicity=<?php echo $row_mortality['ethnicity']?>">Edit</a></td> 
 											   
-											   
-												<td><a href="delete2.php?mortID=<?php echo $row_mortality['birth_year']; ?> 
+											   <td><a href="delete2.php?mortID=<?php echo $row_mortality['birth_year']; ?> 
 													 &dea=<?php echo $row_mortality['death_toll']?>	
                                                &eth=<?php echo $row_mortality['ethnicity']?>"onclick="return deletechecked();">Delete</a></td> 
+											   
                                     </tr>   <?php } ?>
+									
+									
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-				</div>
                 <!-- END OF MORTALITY TABLE -->
-					<!-- controls-->
-<!-- controls-->
-				<div class="row">
+                <div class="row">
                     <div class="col-lg-12">
                         
                             <h2>Search By year</h2>
@@ -207,15 +191,13 @@ else{
                         
                     </div>
                 </div>
-
                 <!-- MOTHERS TABLE -->
-				<div class="row">
-                <div class="col-lg-12">   
-				<h2>Mother</h2>
-  
+                <div class="col-lg-12">
                     <div class="scroll">
-                     
-  
+                        <h2>Mother
+                        <div>
+                            <a href="addMothersData.php" class="btn btn-primary">Add New Mothers Record</a>
+                        </div> </h2>                                               
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover">
                                 <thead>
@@ -233,7 +215,7 @@ else{
                                 <tbody>
                                     <?php
 									$year = $_POST['year'];
-                                    $mothers_sql = "select * from Mother_births_by where birth_year = '$year' ";
+                                    $mothers_sql = "select * from Mother_births_by where birth_year = '$year'";
                                     $mothers_query = sqlsrv_query($conn, $mothers_sql);
                                     if ($mothers_query === false) {
                                         die(print_r(sqlsrv_errors(), true));
@@ -247,13 +229,11 @@ else{
                                         <td><?php echo $row_mothers['mth']; ?></td>
                                         <td><?php echo $row_mothers['child_gender']; ?></td>
                                         <td><?php echo $row_mothers['live_births']; ?></td>
-                                        <!-- ADD IN DELETE HREF HERE -->
-										
-                                        <td><a href="EditData.php?inforID=<?php echo $row_mothers['inforID'];?>">Edit</a></td>
-										
+                                        
+                                        <td><a href="UpdateMothersData.php?inforID=<?php echo $row_mothers['inforID'];?>">Edit</a></td> 
+										<!-- ADD IN DELETE HREF HERE -->
 										<td><a href="delete2.php?inforIDm=<?php echo $row_mothers['inforID']; ?> 
 											&motherbr=<?php echo $row_mothers['birth_year']?>"onclick="return deletechecked();">Delete</a></td> 
-										
 										
 										
                                     </tr>   <?php } ?>                                    
@@ -262,17 +242,18 @@ else{
                         </div>
                     </div>
                 </div>
-							</div>
                 <!-- END OF MOTHERS TABLE -->
                 
                 <!-- FATHERS TABLE -->
-				<div class="row">
                 <div class="col-lg-12">
-                     <h2>Father</h2>
-
-                       <div class="scroll">
+                    <div class="scroll">
+                        <h2>
+                            Father
+                            <div>
+                                <a href="addFathersData.php" class="btn btn-primary">Add New Infants Record</a>
+                            </div>
+                        </h2>
                         <div class="table-responsive">
- 
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
@@ -300,18 +281,18 @@ else{
                                         <td><?php echo $row_fathers['mth']; ?></td>
                                         <td><?php echo $row_fathers['child_gender']; ?></td>
                                         <td><?php echo $row_fathers['live_births']; ?></td>
-                                        <!-- ADD IN DELETE HREF HERE -->
-                                        <td><a href="EditData.php?inforID=<?php echo $row_fathers['inforID'];?>">Edit</a></td> 
-										
+                                       
+                                        <td><a href="UpdateFathersData.php?inforID=<?php echo $row_fathers['inforID'];?>">Edit</a></td> 
+										 <!-- ADD IN DELETE HREF HERE -->
 										<td><a href="delete2.php?inforID=<?php echo $row_fathers['inforID']; ?> 
 										&fatherbr=<?php echo $row_fathers['birth_year']?>"onclick="return deletechecked();">Delete</a></td> 
+										
 										
                                     </tr>   <?php } ?>                                  
                             </table>
                         </div>
-                    </div>	
+                    </div>
                 </div>
-				</div>
                 <!-- END OF FATHERS TABLE -->
                 
             </div>
@@ -320,7 +301,7 @@ else{
         <!-- /#page-wrapper -->
     </div>
     <!-- /#wrapper -->
-	<script> function deletechecked()
+<script> function deletechecked()
     {
         if(confirm("Delete selected?"))
         {
@@ -335,8 +316,7 @@ else{
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js">
-	</script>
+    <script src="js/bootstrap.min.js"></script>
 
     <!-- Morris Charts JavaScript -->
     <script src="js/plugins/morris/raphael.min.js"></script>
