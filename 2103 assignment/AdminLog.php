@@ -1,5 +1,5 @@
 <?php
-include ("database.php");
+include ("Dbconnect.php");
 ?>
 <!DOCTYPE html>
 <!--
@@ -28,7 +28,7 @@ and open the template in the editor.
         <link href="css/customCSS.css" rel="stylesheet">
 
     </head>
-    <body id="AdminLog">
+    <body>
         <div id="wrapper">
 
             <?php include "header.php" ?>
@@ -38,7 +38,7 @@ and open the template in the editor.
                     <div class="row">
                         <div class="col-lg-12">
                             <h1 class="page-header">Admin Logs</h1>
-                           
+
                             <form method="post">
                                 <input type="text" name='searchInput' id="myInput"  placeholder="Search" autofocus/>
                                 <button class="btn btn-info" name = "submit" type = "submit" value = "submit">Submit</button>
@@ -56,25 +56,26 @@ and open the template in the editor.
                                 while ($row = sqlsrv_fetch_array($countResult, SQLSRV_FETCH_ASSOC)) {
                                     echo $row['records'];
                                 }
-                                    ?>
-                                </u></p>
-                                
-                                <div class="table-responsive">
-                                    <table id="myTable">
+                                ?>
+                            </u></p>
 
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
                                         <tr>
                                             <th>No.</th>
                                             <th>Name</th>
                                             <th>Birth Year</th>
                                             <th>Entity</th>
                                             <th>New Value</th>
-                                            <th>Prev Value</th>
+                                            <th>Previous Value</th>
                                             <th>Update type</th>
                                             <th>Attribute</th>
                                             <th>Unique Keys</th>
                                             <th>Date & Time Stamp</th>            
                                         </tr>
-
+                                    </thead>
+                                    <tbody>
                                         <?php
                                         // SEARCHING FUNCTION
                                         if (isset($_POST['submit'])) {
@@ -90,11 +91,11 @@ and open the template in the editor.
                                             if ($searchResult === false) {
                                                 die(print_r(sqlsrv_errors(), true));
                                             }
-                                            $results =[];
+                                            $results = [];
                                             while ($searchRow = sqlsrv_fetch_array($searchResult, SQLSRV_FETCH_ASSOC)) {
                                                 $results[] = $searchRow;
                                             }
-                                            foreach($results as $row){
+                                            foreach ($results as $row) {
                                                 $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
                                                 echo '<tr>';
                                                 echo '<td>' . $row['update_ID'] . '</td>';
@@ -109,9 +110,8 @@ and open the template in the editor.
                                                 echo '<td>' . $date_string . '</td>';
                                                 echo '</tr>';
                                             }
-                                          //END OF SEARCHING FUNCTION
-                                        }  
-                                        else { // RETRIEVE ALL TABLES WITHOUT SEARCHING FUNCTION
+                                            //END OF SEARCHING FUNCTION
+                                        } else { // RETRIEVE ALL TABLES WITHOUT SEARCHING FUNCTION
                                             $retrieveQuery = "SELECT al.update_ID, aa.username, al.birth_year, al.entity, al.new_value, "
                                                     . "al.prev_value, al.update_type, al.timestamp, al.attribute, al.unique_keys FROM AdminLog_updates_on al, admin_acc aa "
                                                     . "WHERE aa.userID = al.userID";
@@ -119,12 +119,12 @@ and open the template in the editor.
                                             if ($retrieveResult === false) {
                                                 die(print_r(sqlsrv_errors(), true));
                                             }
-                                            $results1 =[];   
+                                            $results1 = [];
                                             while ($retrieveRow = sqlsrv_fetch_array($retrieveResult, SQLSRV_FETCH_ASSOC)) {
                                                 $results1[] = $retrieveRow;
                                             }
-                                            foreach($results1 as $row){
-                                            $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
+                                            foreach ($results1 as $row) {
+                                                $date_string = date_format($row['timestamp'], 'jS M Y, G:i A');  // format the date and time
                                                 echo '<tr>';
                                                 echo '<td>' . $row['update_ID'] . '</td>';
                                                 echo '<td>' . $row['username'] . '</td>';
@@ -140,6 +140,7 @@ and open the template in the editor.
                                             }
                                         } // END OF RETRIEVE ALL TABLES WITHOUT SEARCHING FUNCTION
                                         ?>
+                                    </tbody>
                                 </table>
                             </div>
 
@@ -154,7 +155,7 @@ and open the template in the editor.
             <!-- /#page-wrapper --> 
         </div>
         <!-- /#wrapper -->
-        
+
         <!-- jQuery -->
         <script src="js/jquery.js"></script>
 
