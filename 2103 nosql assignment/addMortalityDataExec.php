@@ -1,7 +1,8 @@
 <?php
 
+require_once('authenticate.php');
 require_once('Dbconnect.php');
-$userID = 1;
+$userID = $_SESSION['userType'];
 
 $birth_year = $_POST['birth_year'];
 $ethnicity = $_POST['ethnicity'];
@@ -30,7 +31,7 @@ if ($collection_weak->count() <= 0) {
     if ($collection_exist->count() > 0) {
         echo '<br> Record already exists in DB... Update instead..<br>';
     } else {
-        if ($userID == 1) {
+        if ($userID == "Admin") {
             $insert_mortality = array(
                 "birth_year" => (int)$birth_year,
                 "ethnicity" => $ethnicity,
