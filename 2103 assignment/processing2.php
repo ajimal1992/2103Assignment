@@ -115,7 +115,7 @@ else{
 											
 										
                                         <td><a href="EditData.php?birth_year=<?php echo $row_infants['birth_year']; ?>">Edit</a></td> 
-										<td><a href="delete2.php?infantID=<?php echo $row_infants['birth_year'];?>&total=<?php echo $row_infants['total']?>"onclick="return deletechecked();">Delete</a></td>
+										<td><a href="delete2.php?infantID=<?php echo $row_infants['birth_year'];?>&itotal=<?php echo $row_infants['total']?>"onclick="return deletechecked();">Delete</a></td>
                                     </tr>   <?php } ?>
 									
                                 </tbody>
@@ -233,7 +233,7 @@ else{
                                 <tbody>
                                     <?php
 									$year = $_POST['year'];
-                                    $mothers_sql = "select * from Mother_births_by";
+                                    $mothers_sql = "select * from Mother_births_by where birth_year = '$year' ";
                                     $mothers_query = sqlsrv_query($conn, $mothers_sql);
                                     if ($mothers_query === false) {
                                         die(print_r(sqlsrv_errors(), true));
@@ -287,7 +287,7 @@ else{
                                 </thead>
                                 <?php
 								$yeara = $_POST['yeara'];
-                                $fathers_sql = "select * from Father_births_by";
+                                $fathers_sql = "select * from Father_births_by where birth_year = '$yeara'";
                                 $fathers_query = sqlsrv_query($conn, $fathers_sql);
                                 if ($fathers_query === false) {
                                         die(print_r(sqlsrv_errors(), true));
