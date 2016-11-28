@@ -4,12 +4,12 @@ $queryType = $_GET['type'];
 //$queryType = 'yearlyStats';
 
 $connection = new Mongo();
-$dbname = $connection->selectDB('InfantWatch');
+$db = $connection->selectDB('InfantWatch');
 
 if($queryType === 'infants'){ //done
     $min = $_GET['min'];
     $max = $_GET['max'];
-    $collection = $dbname->selectCollection('infants');    
+    $collection = $db->selectCollection('infants');    
     $query = array('birth_year' => array( '$gt' => $min-1, '$lt' => $max+1 ));
     $results = $collection->find($query);
     
@@ -29,7 +29,7 @@ else if($queryType === 'distinctYears'){ //done
     else{
         $documentName = "birth_year";
     }
-    $collection = $dbname->selectCollection($collectionName); 
+    $collection = $db->selectCollection($collectionName); 
     $allData = $collection->distinct($documentName);
 }
 
@@ -38,7 +38,7 @@ else if($queryType === 'distinctColumn'){//done
 //    $tableColumn = $_GET['column'];
     $collectionName = $_GET['table'];
     $documentName = $_GET['column'];
-    $collection = $dbname->selectCollection($collectionName); 
+    $collection = $db->selectCollection($collectionName); 
     $allData = $collection->distinct($documentName);
 }
 
@@ -66,7 +66,7 @@ else if($queryType === "yearlyStats"){
 //    $where = $_GET['where'];
 //    $collectionName = $_GET['tableName'];
     $collectionName = "Mother_births_by";
-    $collection = $dbname->selectCollection($collectionName); 
+    $collection = $db->selectCollection($collectionName); 
     $query = array(
         array(
             '$match' => array('race' => array('$in' => array('CHINESE', 'INDIANS')))

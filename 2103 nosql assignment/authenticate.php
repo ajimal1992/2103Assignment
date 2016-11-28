@@ -9,8 +9,8 @@
 session_start();
 require_once 'Dbconnect.php';
 
-$collection = $dbname->selectCollection('admin_acc');
-$collection1 = $dbname->selectCollection('assistant_admin_acc');
+$collection = $db->selectCollection('admin_acc');
+$collection1 = $db->selectCollection('assistant_admin_acc');
 
 $username = filter_input(INPUT_POST, 'username');//$_POST['username']; 
 $password  = filter_input(INPUT_POST, 'pwd');//$_POST['pwd'];

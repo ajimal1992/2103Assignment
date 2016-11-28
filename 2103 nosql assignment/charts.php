@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Bootstrap Admin Template</title>
+    <title>Infant Watch</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -45,14 +45,14 @@
 
             <div class="container-fluid">
 
-                <!-- Page Heading -->
+<!--                 Page Heading 
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
                             Infant Watch
                         </h1>
                     </div>
-                </div>
+                </div>-->
                 <!-- /.row -->
 
                 <!-- Flot Charts -->
