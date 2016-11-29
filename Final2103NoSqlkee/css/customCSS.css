@@ -1,0 +1,36 @@
+#myTable
+{
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid beige;
+    font-size: 18px;
+}
+
+#myTable th{
+    border-bottom: 1px solid beige;
+    text-align: left;
+    border-collapse: collapse;
+    background-color:beige;
+}
+
+#myTable td {
+    border-bottom: 1px solid #d6d6d6;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+
+#myTable tr {
+    border-bottom: 1px solid beige;
+}
+
+#myTable tr.header, #myTable tr:hover {
+    background-color: #c4e3f3;
+}
+
+#myInput {
+    background-image:url(../images/searchIcon.png);
+    background-repeat:no-repeat;
+    width: 60%;
+    padding: 12px 20px 12px 40px; 
+}
